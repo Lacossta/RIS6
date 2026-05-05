@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+    <ui:define name="content">
+        <h2>Расписание рейсов</h2>
+
+        <h:form id="searchForm" style="margin-bottom: 15px;">
+            <h:outputLabel value="Поиск: " />
+            <h:inputText id="search" value="#{tripBean.searchQuery}">
+                <f:ajax event="keyup" execute="@this" render=":tableForm:tripsTable" listener="#{tripBean.searchAjax}" delay="300" />
+            </h:inputText>
+
+            <h:commandButton value="Сбросить" action="#{tripBean.cancel}" style="margin-left: 10px;">
+                <f:ajax execute="@this" render=":searchForm:search :tableForm:tripsTable" />
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="tableForm">
+            <h:dataTable id="tripsTable" value="#{tripBean.trips}" var="trip" border="1" style="width: 100%; text-align: center;">
+                <h:column><f:facet name="header">Рейс</f:facet>#{trip.flightNumber}</h:column>
+                <h:column><f:facet name="header">Откуда</f:facet>#{trip.departure}</h:column>
+                <h:column><f:facet name="header">Куда</f:facet>#{trip.destination}</h:column>
+                <h:column><f:facet name="header">Тип</f:facet>#{trip.transportType.displayName}</h:column>
+                <h:column><f:facet name="header">Цена</f:facet>#{trip.price}</h:column>
+                <h:column>
+                    <f:facet name="header">Действия</f:facet>
+                    <h:commandButton value="Изменить" action="form" style="margin-right: 5px;">
+                        <f:setPropertyActionListener target="#{tripBean.selectedTrip}" value="#{trip}" />
+                    </h:commandButton>
+                    <h:commandButton value="Удалить" action="#{tripBean.delete(trip.id)}">
+                        <f:ajax execute="@this" render="tripsTable" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

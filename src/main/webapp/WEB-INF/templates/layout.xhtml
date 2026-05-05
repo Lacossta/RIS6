@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <title><ui:insert name="title">Расписание</ui:insert></title>
+</h:head>
+<h:body>
+    <h:form id="navForm">
+        <h:commandLink value="Каталог" action="#{tripBean.cancel}" style="margin-right: 15px; font-weight: bold;"/>
+        <h:commandLink value="Добавить рейс" action="#{tripBean.prepareAdd}" />
+    </h:form>
+    <hr/>
+
+    <ui:insert name="content"></ui:insert>
+
+    <hr/>
+    <footer>
+        <p>Текущее время на сервере: #{systemInfoBean.currentTime}</p>
+    </footer>
+</h:body>
+</html>
